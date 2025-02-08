@@ -1,37 +1,22 @@
 'use strict';
 
-// window.addEventListener('DOMContentLoaded', () => {
-//     // const timer = setTimeout(function() {
-//     //     console.log('прошло 2 секунды');
-//     // },2000);
-
-//     let timer = document.querySelector('#timer');
-//     let count = 0;
-//     const timerFunc = setTimeout(() => {
-//         console.log(timer,count);
-//         count++;
-//         if (count < 5) {
-//             timerFunc();
-//         } else {
-//             return count;
-//         }
-//     },1000);
-// });
-
-let time = 10;
+let time = 180; // задаем время в секундах
 
 const countDown = document.querySelector('#countdown');
+const btnStart = document.querySelector('#start');
 
-setInterval(updateCountdown, 1000);
+btnStart.addEventListener('click', () => {
+    setInterval(updateCountdown, 1000); // запуск функции будет повторятся каждую секунду 
+});
 
 function updateCountdown () {
     if (time <= 0 ) {
         countDown.innerHTML = `время вышло`
     } else {
-        const minutes = Math.floor(time / 60);
+        const minutes = Math.floor(time / 60); // делим время на 60 , узнаем сколько минут задано в тайм, и округляем
         let seconds = time % 60;
-        seconds = seconds < 10 ? '0' + seconds : seconds;
+        seconds = seconds < 10 ? '0' + seconds : seconds; // если в секундах меньше 10, что бы подставлялся нолик
         countDown.innerHTML = `${minutes}:${seconds}`
-        time--;
+        time--; // время уменьшается на 1 с каждой итерацией 
     }
 }
