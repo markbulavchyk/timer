@@ -2,3 +2,28 @@
     padding-left: 100px;
     font-size:  36px;
 }
+
+.container {
+    display: none;
+    margin: 20px;
+}
+.subheader {
+    display: none;
+}
+
+.boiledEgg {
+    cursor: pointer;
+    margin: 20px;
+    border: none;
+    background-color: rgb(243, 207, 102);
+    &:hover {
+        border: 1px solid black;;
+    }
+}
+.show {
+    display: block;
+}
+
+.hide {
+    display: none;
+}
