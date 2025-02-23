@@ -1,6 +1,7 @@
 * {
     padding-left: 100px;
     font-size:  36px;
+    background-color: rgb(247, 164, 22);
 }
 
 .container {
@@ -15,7 +16,7 @@
     cursor: pointer;
     margin: 20px;
     border: none;
-    background-color: rgb(243, 207, 102);
+    background-color: rgb(255, 255, 255);
     &:hover {
         border: 1px solid black;;
     }

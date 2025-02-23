@@ -10,29 +10,50 @@ const container = document.querySelector('.container');
 const subheader = document.querySelector('.subheader');
 
 const countDown = document.querySelector('#countdown');
-// const btnStart = document.querySelector('#start');
+const btnStop = document.querySelector('#stop');
 
 firstBtn.addEventListener('click', () => {
     subheader.classList.toggle('show');
     container.classList.toggle('show');
-})
-
+});
 
 class Timer {
-    constructor(time){
+    constructor(time) {
         this.time = time;
+        this.intervalId = null;
+        this.isRunning = false;
     }
-    timerForEggs () {
-        if (this.time <= 0 ) {
-            countDown.innerHTML = `Your eggs are ready`
+
+    timerForEggs() {
+        if (this.time <= 0) {
+            countDown.innerHTML = `Your eggs are ready`;
+            this.stopTimer();
         } else {
-            const minutes = Math.floor(this.time / 60); // делим время на 60 , узнаем сколько минут задано в тайм, и округляем
-            let seconds = this.time % 60;
-            seconds = seconds < 10 ? '0' + seconds : seconds; // если в секундах меньше 10, что бы подставлялся нолик
-            countDown.innerHTML = `Time left: ${minutes}:${seconds}`
-            this.time--; // время уменьшается на 1 с каждой итерацией 
+            countDown.innerHTML = this.getTimeLeft();
+            this.time--;
         }
-    };
+    }
+
+    startTimer() {
+        if (this.intervalId !== null) return;
+        this.isRunning = true;
+        this.intervalId = setInterval(this.timerForEggs.bind(this), 1000);
+    }
+
+    stopTimer() {
+        if (this.intervalId !== null) {
+            clearInterval(this.intervalId);
+            this.intervalId = null;
+            this.isRunning = false;
+        }
+    }
+
+    getTimeLeft() {
+        const minutes = Math.floor(this.time / 60);
+        let seconds = this.time % 60;
+        seconds = seconds < 10 ? '0' + seconds : seconds;
+        return `Time left: ${minutes}:${seconds}`;
+    }
 }
 
 const poachedEggs = new Timer(poached);
@@ -40,44 +61,68 @@ const softEggs = new Timer(soft);
 const mediumEggs = new Timer(medium);
 const hardEggs = new Timer(hard);
 
-
 const type1 = document.querySelector('[data-poached]'),
       type2 = document.querySelector('[data-soft]'),
-      type3 = document.querySelector('[data-medium'),
-      type4 = document.querySelector('[data-hard');
+      type3 = document.querySelector('[data-medium]'),
+      type4 = document.querySelector('[data-hard]');
 
-let arr = [type1,type2,type3,type4];
+let arr = [type1, type2, type3, type4];
 
 for (let type of arr) {
     type.addEventListener('click', () => {
+        poachedEggs.stopTimer();
+        softEggs.stopTimer();
+        mediumEggs.stopTimer();
+        hardEggs.stopTimer();
+
         if (type == type1) {
-            setInterval(poachedEggs.timerForEggs.bind(poachedEggs), 1000);
+            poachedEggs.startTimer();
             type2.classList.add('hide');
             type3.classList.add('hide');
             type4.classList.add('hide');
         } else if (type == type2) {
-            setInterval(softEggs.timerForEggs.bind(softEggs), 1000);
+            softEggs.startTimer();
             type1.classList.add('hide');
             type3.classList.add('hide');
             type4.classList.add('hide');
         } else if (type == type3) {
-            setInterval(mediumEggs.timerForEggs.bind(mediumEggs), 1000);
+            mediumEggs.startTimer();
             type1.classList.add('hide');
             type2.classList.add('hide');
             type4.classList.add('hide');
         } else if (type == type4) {
-            setInterval(hardEggs.timerForEggs.bind(hardEggs), 1000);
+            hardEggs.startTimer();
             type1.classList.add('hide');
             type2.classList.add('hide');
             type3.classList.add('hide');
         } else {
             console.log('error');
         }
-    },{ once: true }) 
+
+        btnStop.textContent = 'Stop Timer';
+    }, { once: true });
 }
 
-// btnStart.addEventListener('click', () => {
-//     setInterval(poachedEggs.timerForEggs.bind(poachedEggs), 1000); // запуск функции будет повторятся каждую секунду 
-//     // использую метод bind для сохранение контекста вызова this (ручная привязка)
-// }, { once: true });
+btnStop.addEventListener('click', () => {
+    const activeTimer = [poachedEggs, softEggs, mediumEggs, hardEggs].find(timer => timer.isRunning);
 
+    if (activeTimer) {
+        activeTimer.stopTimer();
+        countDown.innerHTML = activeTimer.getTimeLeft(); 
+        btnStop.textContent = 'Start Timer';
+    } else {
+        const selectedType = arr.find(type => !type.classList.contains('hide'));
+        if (selectedType) {
+            if (selectedType == type1) {
+                poachedEggs.startTimer();
+            } else if (selectedType == type2) {
+                softEggs.startTimer();
+            } else if (selectedType == type3) {
+                mediumEggs.startTimer();
+            } else if (selectedType == type4) {
+                hardEggs.startTimer();
+            }
+            btnStop.textContent = 'Stop Timer';
+        }
+    }
+});
