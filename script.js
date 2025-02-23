@@ -1,6 +1,6 @@
 'use strict';
 
-const poached = 10;
+const poached = 180;
 const soft = 300;
 const medium = 480;
 const hard = 600;

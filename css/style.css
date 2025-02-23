@@ -1,9 +1,29 @@
+h1, h2, h3, h4, h5, figure, p, ol, ul {
+    margin: 0;
+}
+ol[role="list"], ul[role="list"] {
+    list-style: none;
+    padding-inline: 0;
+}  
+h1, h2, h3, h4, h5 {
+    font-size: inherit;
+    font-weight: inherit;
+}  
+img {
+    display: block;
+    max-inline-size: 100%;
+}
+
+
+
 * {
-    padding-left: 100px;
+    font-family: "Space Mono", serif;
     font-size:  36px;
     background-color: rgb(247, 164, 22);
 }
-
+button {
+    cursor: pointer;
+}
 .container {
     display: none;
     margin: 20px;
@@ -13,7 +33,6 @@
 }
 
 .boiledEgg {
-    cursor: pointer;
     margin: 20px;
     border: none;
     background-color: rgb(255, 255, 255);
